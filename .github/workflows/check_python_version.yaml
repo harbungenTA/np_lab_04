@@ -1,0 +1,30 @@
+name: Check Python Version
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-python-version:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Pobiera zawartość repozytorium.
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Ustawia środowisko Python z wersją 3.11.
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+
+    # Aktualizuje narzędzie pip do najnowszej wersji.
+    - name: Upgrade pip
+      run: |
+        python -m pip install --upgrade pip
+        
+    # Wyświetla aktualną wersję Pythona.
+    - name: Display Python version
+      run: python --version
