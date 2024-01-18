@@ -1,0 +1,39 @@
+name: check_syntax
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-syntax:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: [3.9, 3.10, 3.11]
+
+    steps:
+    #Pobiera zawartość repozytorium.
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    #Ustawia środowisko Python zgodnie z zadeklarowaną wersją.
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    #Aktualizuje narzędzie pip do najnowszej wersji.
+    - name: Upgrade pip
+      run: |
+        python -m pip install --upgrade pip
+    #Instaluje bibliotekę flake8 do analizy stylu kodu.
+    - name: Install flake8
+      run: |
+        python -m pip install flake8
+    #Wyświetla aktualną wersję Pythona.
+    - name: Display Python version
+      run: python --version
+    #Uruchamia analizę stylu kodu przy użyciu flake8.
+    - name: Run flake8
+      run: |
+        flake8
